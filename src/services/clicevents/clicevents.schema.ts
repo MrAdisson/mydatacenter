@@ -66,7 +66,12 @@ export const cliceventsQuerySchema = Type.Intersect(
   [
     querySyntax(cliceventsQueryProperties),
     // Add additional query properties here
-    Type.Object({}, { additionalProperties: false })
+    Type.Object(
+      {
+        $distinct: Type.Optional(Type.Boolean())
+      },
+      { additionalProperties: false }
+    )
   ],
   { additionalProperties: false }
 )

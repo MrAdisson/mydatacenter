@@ -42,7 +42,23 @@ export const clicevents = (app: Application) => {
         schemaHooks.validateQuery(cliceventsQueryValidator),
         schemaHooks.resolveQuery(cliceventsQueryResolver)
       ],
-      find: [],
+      find: [
+        (context) => {
+          // If {$distinct: true} is included in the query,
+          // add `distinct()` to the knex query.
+          if (context?.params?.query?.$distinct) {
+            delete context.params.query.$distinct
+            const knex = context.service.createQuery(context.params)
+            context.params.knex = knex.distinct()
+            // workaround to remove id from the query:
+            context.params.knex = knex
+              .clearSelect()
+              .select(context.params.query.$select || '')
+              .distinct()
+            return context
+          }
+        }
+      ],
       get: [],
       create: [
         schemaHooks.validateData(cliceventsDataValidator),
