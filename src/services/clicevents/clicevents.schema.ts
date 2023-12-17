@@ -17,7 +17,7 @@ export const cliceventsSchema = Type.Object(
     target: Type.String(),
     reason: Type.Optional(Type.String()),
     item: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.String())
+    createdAt: Type.String()
   },
   { $id: 'Clicevents', additionalProperties: false }
 )
